@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Descobrindo seu Ninho · Ruhta</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&display=swap');
+ 
+:root{
+  --purple: #2D1B69;
+  --purple-soft: #4A3590;
+  --orange: #D97A45;
+  --blue: #8FB4D9;
+  --cream: #FAF7F1;
+  --ink: #2A2534;
+  --line: #E4DDD0;
+}
+ 
+*{box-sizing:border-box;margin:0;padding:0;}
+ 
+body{
+  background:var(--cream);
+  color:var(--ink);
+  font-family:'Inter',system-ui,sans-serif;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  padding:0;
+}
+ 
+.wrap{
+  width:100%;
+  max-width:560px;
+  min-height:100vh;
+  background:#fff;
+  box-shadow:0 0 40px rgba(45,27,105,0.08);
+  display:flex;
+  flex-direction:column;
+}
+ 
+.top{
+  background:var(--purple);
+  color:#fff;
+  padding:32px 28px 24px;
+}
+ 
+.top .brand{
+  font-family:'Fraunces',serif;
+  font-size:15px;
+  letter-spacing:0.14em;
+  color:var(--blue);
+  text-transform:lowercase;
+}
+ 
+.top h1{
+  font-family:'Fraunces',serif;
+  font-weight:500;
+  font-size:22px;
+  margin-top:10px;
+  line-height:1.3;
+}
+ 
+.progress{
+  display:flex;
+  gap:6px;
+  margin-top:20px;
+}
+.progress span{
+  height:3px;
+  flex:1;
+  background:rgba(255,255,255,0.2);
+  border-radius:2px;
+  transition:background 0.3s;
+}
+.progress span.done{background:var(--orange);}
+ 
+.content{
+  padding:28px;
+  flex:1;
+}
+ 
+.step{display:none;}
+.step.active{display:block;}
+ 
+.step-label{
+  font-size:12px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--purple-soft);
+  font-weight:600;
+  margin-bottom:6px;
+}
+ 
+.step-title{
+  font-family:'Fraunces',serif;
+  font-size:19px;
+  font-weight:500;
+  margin-bottom:8px;
+  color:var(--purple);
+}
+ 
+.step-hint{
+  font-size:14px;
+  color:#77706D;
+  margin-bottom:24px;
+  line-height:1.5;
+}
+ 
+label.field{
+  display:block;
+  margin-bottom:18px;
+}
+ 
+label.field span{
+  display:block;
+  font-size:13px;
+  font-weight:500;
+  margin-bottom:6px;
+  color:var(--ink);
+}
+ 
+input[type=text], input[type=date], input[type=time], select{
+  width:100%;
+  padding:12px 14px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  font-size:15px;
+  font-family:'Inter',sans-serif;
+  background:#fff;
+  color:var(--ink);
+}
+input:focus, select:focus{
+  outline:none;
+  border-color:var(--orange);
+}
+ 
+.checkbox-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:-8px;
+  margin-bottom:18px;
+  font-size:13px;
+  color:#77706D;
+}
+.checkbox-row input{width:auto;}
+ 
+.group-title{
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  color:var(--orange);
+  margin:22px 0 10px;
+}
+.group-title:first-of-type{margin-top:0;}
+ 
+.option-card{
+  display:block;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:16px;
+  margin-bottom:12px;
+  cursor:pointer;
+  transition:border-color 0.2s, background 0.2s;
+  font-size:14px;
+  line-height:1.5;
+  position:relative;
+}
+.option-card:hover{border-color:var(--blue);}
+.option-card.selected{
+  border-color:var(--orange);
+  background:#FDF6F1;
+}
+.option-card input{
+  position:absolute;
+  opacity:0;
+}
+.option-card .tag{
+  display:none;
+  position:absolute;
+  top:12px;
+  right:12px;
+  width:18px;height:18px;
+  border-radius:50%;
+  background:var(--orange);
+}
+.option-card.selected .tag{display:block;}
+ 
+.rank-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:14px 16px;
+  margin-bottom:10px;
+  font-size:13.5px;
+  line-height:1.5;
+}
+.rank-item select{
+  width:64px;
+  flex-shrink:0;
+  padding:8px 6px;
+  text-align:center;
+}
+.rank-item.filled{border-color:var(--blue);background:#F7FAFC;}
+ 
+.quad-question{
+  margin-bottom:26px;
+}
+.quad-question .qtext{
+  font-size:14.5px;
+  font-weight:500;
+  color:var(--ink);
+  margin-bottom:12px;
+}
+ 
+.nav{
+  display:flex;
+  gap:12px;
+  padding:20px 28px 28px;
+  border-top:1px solid var(--line);
+}
+ 
+button.btn{
+  flex:1;
+  padding:14px;
+  border-radius:8px;
+  border:none;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:14.5px;
+  cursor:pointer;
+  transition:opacity 0.2s;
+}
+button.btn:disabled{opacity:0.35;cursor:not-allowed;}
+.btn-primary{background:var(--purple);color:#fff;}
+.btn-primary:hover:not(:disabled){background:var(--purple-soft);}
+.btn-ghost{background:none;color:var(--purple);border:1px solid var(--line);flex:0 0 100px;}
+ 
+.error{
+  font-size:12.5px;
+  color:#C4573B;
+  margin-top:-10px;
+  margin-bottom:14px;
+  display:none;
+}
+.error.show{display:block;}
+ 
+.result-box{
+  background:var(--cream);
+  border-radius:12px;
+  padding:20px;
+  font-size:13px;
+  white-space:pre-wrap;
+  line-height:1.6;
+  border:1px solid var(--line);
+  margin-bottom:16px;
+  font-family:'Inter',monospace;
+  max-height:340px;
+  overflow-y:auto;
+}
+ 
+.confirm-icon{
+  width:44px;height:44px;
+  border-radius:50%;
+  background:var(--purple);
+  color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Fraunces',serif;
+  font-size:20px;
+  margin-bottom:18px;
+}
+ 
+.copied-msg{
+  font-size:12.5px;
+  color:var(--purple-soft);
+  text-align:center;
+  margin-top:8px;
+  height:16px;
+}
+ 
+.send-status{
+  font-size:13px;
+  text-align:center;
+  padding:10px;
+  border-radius:8px;
+  margin-bottom:12px;
+  background:#F1F5F0;
+  color:#4A6B4D;
+}
+.send-status.error{
+  background:#FBEEEA;
+  color:#C4573B;
+}
+ 
+/* Passo final: identidade visual alinhada ao template do Ninho */
+.ninho-final{
+  background:#2D1B69;
+  margin:-28px -28px -28px;
+  padding:44px 28px 40px;
+}
+.nf-tag{
+  font-family:Arial, Helvetica, sans-serif;
+  font-size:12px;
+  font-weight:bold;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:#7BA3C4;
+  margin-bottom:16px;
+}
+.nf-title{
+  font-family:Georgia, 'Times New Roman', serif;
+  font-weight:normal;
+  font-size:30px;
+  color:#FFFFFF;
+  margin:0 0 20px;
+}
+.nf-body{
+  font-family:Georgia, 'Times New Roman', serif;
+  font-size:15.5px;
+  line-height:1.85;
+  color:#E5E7EB;
+  margin:0 0 28px;
+}
+.nf-status{
+  font-family:Arial, Helvetica, sans-serif;
+  font-size:13px;
+  color:#7BA3C4;
+  margin-bottom:18px;
+}
+.nf-status.error{
+  color:#E8A688;
+}
+.nf-btn{
+  width:100%;
+  font-family:Arial, Helvetica, sans-serif;
+  font-weight:bold;
+  font-size:14.5px;
+  padding:14px;
+  border-radius:6px;
+  border:none;
+  background:#E8734A;
+  color:#FFFFFF;
+  cursor:pointer;
+  transition:opacity 0.2s;
+}
+.nf-btn:hover{opacity:0.88;}
+.ninho-final .copied-msg{
+  color:#7BA3C4;
+}
+.nf-toggle{
+  display:block;
+  margin:18px auto 0;
+  font-family:Arial, Helvetica, sans-serif;
+  font-size:12.5px;
+  color:#7BA3C4;
+  background:none;
+  border:none;
+  text-decoration:underline;
+  cursor:pointer;
+  padding:0;
+}
+.ninho-final .result-box{
+  margin-top:16px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.15);
+  color:#E5E7EB;
+}
+
+.rodape-legal{
+  padding:0 28px 24px;
+  font-size:11px;
+  line-height:1.6;
+  color:#9A938F;
+  text-align:center;
+}
+.rodape-legal a{color:#9A938F;text-underline-offset:2px;}
+
+.field-hint{
+  display:block;
+  font-size:12px;
+  line-height:1.5;
+  color:#77706D;
+  margin-top:6px;
+}
+
+/* LGPD: aviso de privacidade e aceites */
+.lgpd-aviso{
+  background:var(--cream);
+  border-left:3px solid var(--purple);
+  border-radius:8px;
+  padding:14px 16px;
+  margin-bottom:24px;
+  font-size:13px;
+  line-height:1.6;
+  color:var(--ink);
+}
+.lgpd-aviso p + p{margin-top:8px;}
+.lgpd-aviso a, .lgpd-check a{color:var(--purple);text-underline-offset:3px;}
+.lgpd-aceites{
+  margin-top:26px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+}
+.lgpd-check{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  margin-bottom:14px;
+  font-size:13px;
+  line-height:1.55;
+  color:var(--ink);
+  cursor:pointer;
+}
+.lgpd-check input{
+  flex:0 0 auto;
+  width:18px;
+  height:18px;
+  margin-top:1px;
+  accent-color:var(--purple);
+  cursor:pointer;
+}
+.lgpd-check .obs{color:#77706D;font-size:12px;}
+</style>
+</head>
+<body>
+ 
+<div class="wrap">
+  <div class="top">
+    <div class="brand">ruhta</div>
+    <h1>Descobrindo seu Ninho</h1>
+    <div class="progress">
+      <span class="bar done"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </div>
+  </div>
+ 
+  <div class="content">
+ 
+    <!-- STEP 1 -->
+    <div class="step active" data-step="1">
+      <div class="step-label">Parte 1 de 5</div>
+      <div class="step-title">Seus dados</div>
+      <div class="step-hint">Esses dados alimentam a leitura completa do seu mapa. Preencha exatamente como constam no seu registro de nascimento.</div>
+
+      <!-- LGPD: aviso de privacidade -->
+      <div class="lgpd-aviso">
+        <p>Para escrever o seu Ninho, vamos pedir seus dados de contato, de nascimento e algumas respostas sobre você. Essas informações servem só para isso.</p>
+        <p>Algumas das ferramentas que usamos para calcular e escrever o seu Ninho funcionam fora do Brasil. Tudo está explicado na nossa <a href="politica-de-privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.</p>
+      </div>
+ 
+      <label class="field">
+        <span>Nome completo de nascimento</span>
+        <input type="text" id="nome" placeholder="Como está na sua certidão de nascimento">
+        <small class="field-hint">Use o nome exatamente como foi registrado quando você nasceu, mesmo que hoje você use outro. Ele é a base de parte da leitura do seu Ninho.</small>
+      </label>
+ 
+      <label class="field">
+        <span>E-mail</span>
+        <input type="text" id="email" placeholder="seu@email.com">
+      </label>
+ 
+      <label class="field">
+        <span>WhatsApp</span>
+        <input type="text" id="whatsapp" placeholder="(11) 90000-0000">
+      </label>
+ 
+      <label class="field">
+        <span>Data de nascimento</span>
+        <input type="date" id="dataNasc">
+      </label>
+ 
+      <label class="field">
+        <span>Horário de nascimento</span>
+        <input type="time" id="horaNasc">
+      </label>
+      <div class="checkbox-row">
+        <input type="checkbox" id="naoSeiHora">
+        <label for="naoSeiHora">Não sei o horário exato</label>
+      </div>
+ 
+      <label class="field">
+        <span>Cidade onde nasceu</span>
+        <input type="text" id="cidadeNasc" placeholder="Ex: São Paulo">
+      </label>
+ 
+      <label class="field">
+        <span>Estado onde nasceu</span>
+        <input type="text" id="estadoNasc" placeholder="Ex: São Paulo (ajuda a diferenciar cidades com o mesmo nome em estados diferentes)">
+      </label>
+ 
+      <label class="field">
+        <span>País onde nasceu</span>
+        <input type="text" id="paisNasc" placeholder="Ex: Brasil">
+      </label>
+ 
+      <label class="field">
+        <span>Gênero</span>
+        <select id="genero">
+          <option value="">Selecione</option>
+          <option value="feminino">Feminino</option>
+          <option value="masculino">Masculino</option>
+          <option value="outro">Prefiro descrever</option>
+        </select>
+      </label>
+ 
+      <label class="field">
+        <span>Palavra de poder (a que mais representa o que você valoriza)</span>
+        <input type="text" id="palavraPoder" placeholder="Uma palavra">
+      </label>
+      <!-- LGPD: aceites -->
+      <div class="lgpd-aceites">
+        <label class="lgpd-check">
+          <input type="checkbox" id="lgpdConsentimento">
+          <span>Li a <a href="politica-de-privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>, tenho 18 anos ou mais e autorizo a Ruhta a usar meus dados para gerar meu Ninho, incluindo o processamento em serviços fora do Brasil. <span class="obs">(obrigatório)</span></span>
+        </label>
+        <label class="lgpd-check">
+          <input type="checkbox" id="lgpdMarketing">
+          <span>Quero receber conteúdos e novidades da Ruhta por e-mail e WhatsApp. Posso sair quando quiser. <span class="obs">(opcional)</span></span>
+        </label>
+      </div>
+
+      <div class="error" id="err1">Preencha nome, e-mail, WhatsApp, data de nascimento, cidade e país para continuar.</div>
+      <div class="error" id="errIdade">O Ninho é feito para pessoas com 18 anos ou mais. Se houve algum engano na data de nascimento, é só corrigir.</div>
+      <div class="error" id="errAceite">Para gerar o seu Ninho, precisamos da sua autorização. Marque a primeira caixa para continuar.</div>
+    </div>
+ 
+    <!-- STEP 2 -->
+    <div class="step" data-step="2">
+      <div class="step-label">Parte 2 de 5</div>
+      <div class="step-title">Escolha uma frase de cada grupo</div>
+      <div class="step-hint">Não existe resposta certa. Escolha a frase que mais soa como você, mesmo que nenhuma seja perfeita.</div>
+ 
+      <div class="group-title">1º grupo: escolha uma frase</div>
+      <div id="grupoA"></div>
+      <div class="group-title">2º grupo: escolha outra frase</div>
+      <div id="grupoB"></div>
+      <div class="error" id="err2">Escolha uma frase de cada grupo para continuar.</div>
+    </div>
+ 
+    <!-- STEP 3 -->
+    <div class="step" data-step="3">
+      <div class="step-label">Parte 3 de 5</div>
+      <div class="step-title">Ordene as três que mais se parecem com você</div>
+      <div class="step-hint">Marque "1º" na frase que mais te representa, "2º" na intermediária e "3º" na terceira. As demais ficam sem marcação.</div>
+      <div id="grupoC"></div>
+      <div class="error" id="err3">Marque exatamente uma frase como 1º, uma como 2º e uma como 3º.</div>
+    </div>
+ 
+    <!-- STEP 4 -->
+    <div class="step" data-step="4">
+      <div class="step-label">Parte 4 de 5</div>
+      <div class="step-title">Como você tende a agir</div>
+      <div class="step-hint">Em cada pergunta, ordene as 4 opções de "1º" (a que mais se parece com você) até "4º" (a que menos se parece).</div>
+      <div id="grupoD"></div>
+      <div class="error" id="err4">Em cada pergunta, ordene as 4 opções de 1º a 4º antes de continuar.</div>
+    </div>
+ 
+    <!-- STEP 5 -->
+    <div class="step" data-step="5">
+      <div class="ninho-final">
+        <div class="nf-tag">seu ninho</div>
+        <h2 class="nf-title">Pronto.</h2>
+        <p class="nf-body">O que você compartilhou aqui já é o início do retrato do seu ninho. A partir de agora, cada resposta sua passa por uma escuta cuidadosa, que cruza padrões, tempo e trajetória, e se transforma em uma leitura só sua, escrita com profundidade. Em breve esse retrato chega até você.</p>
+        <div class="nf-status" id="sendStatus">Enviando resultado...</div>
+        <button class="nf-btn" onclick="copiarResultado()">Copiar dados enviados</button>
+        <div class="copied-msg" id="copiedMsg"></div>
+        <button class="nf-toggle" type="button" id="toggleBtn" onclick="toggleDados()">Ver dados enviados</button>
+        <div class="result-box" id="resultBox" style="display:none;"></div>
+      </div>
+    </div>
+ 
+  </div>
+ 
+  <div class="nav">
+    <button class="btn btn-ghost" id="btnBack" onclick="voltar()" style="display:none">Voltar</button>
+    <button class="btn btn-primary" id="btnNext" onclick="avancar()">Continuar</button>
+  </div>
+  <div class="rodape-legal">
+    Ruhta é uma marca da Liderança Educadora - Serviços Administrativos e Educacionais Ltda.<br>
+    CNPJ 07.484.932/0001-04 · <a href="politica-de-privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>
+  </div>
+</div>
+ 
+<script>
+// Cole aqui a URL gerada depois de implantar o Google Apps Script como Web App.
+// Enquanto estiver vazia, o envio automático fica desativado e só o botão de copiar funciona.
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyOMtq7GJjOqHUicIDZlsOcku56Yi8Od59BgFoNAQw13pw4PykLjlq7dQi1QzuksV61/exec";
+ 
+const grupoAFrases = [
+  {v:1, t:"Todos os meus atos têm por finalidade ajudar as pessoas e me dedicar a melhorar o mundo. Fico muito triste quando não atendo às expectativas e não recebo reconhecimento pelo que faço. Sempre dou o melhor de mim com a intenção de ajudar, mas muitas vezes isso não é bem compreendido."},
+  {v:2, t:"Gosto quando as pessoas são diretas comigo. Não suporto mentiras nem traições. Também não tenho paciência com quem fica enrolando para resolver os assuntos importantes da própria vida. Tenho um grande senso de justiça, muita energia, e entendo que o poder deve ser usado de forma positiva para mudar o mundo."},
+  {v:3, t:"Não gosto muito de aparecer, prefiro cuidar de mim e das pessoas que precisam de mim. Escolho ambientes solidários, onde as pessoas se tratam como amigas, em vez de lugares competitivos e cheios de falsidade. Idealizo um mundo onde as pessoas são felizes e unidas."}
+];
+ 
+const grupoBFrases = [
+  {v:4, t:"Sou uma pessoa muito transparente, e todos percebem quando não gosto de alguma coisa. Não gosto de ter chefes, porque sei muito bem o que devo fazer e preciso de autonomia. Muitas vezes transmito uma imagem de força, mesmo tendo minhas fragilidades."},
+  {v:5, t:"Sou uma pessoa bastante racional e organizada, e gosto de fazer o melhor de mim, de preferência sem a ajuda de outras pessoas, pois elas acabariam atrapalhando. Não sou uma pessoa muito afetiva ou próxima das outras, talvez porque não saiba como me aproximar, ou porque as pessoas poderiam me julgar de forma errada."},
+  {v:6, t:"Sou muito otimista e entendo que as coisas sempre vão dar certo no final. Gosto de pessoas e de fazer as coisas em grupo, porque assim tudo fica mais divertido e cheio de afeto. Faço tudo com alegria e, às vezes, tenho muitas atividades ao mesmo tempo."}
+];
+ 
+const grupoCFrases = [
+  {tipo:1, t:"Estarei em um bom caminho se fizer o que é certo e se ensinar as pessoas a fazerem o que é certo também. Entendo isso como uma missão."},
+  {tipo:2, t:"Estarei em um bom caminho se tiver o amor dos meus amigos e familiares e estiver perto deles. Quero muito ajudá-los no que eu puder."},
+  {tipo:3, t:"Estarei em um bom caminho se tiver o respeito e a admiração das pessoas ao redor. Ter um bom desempenho e me destacar é algo importante para mim."},
+  {tipo:4, t:"Estarei em um bom caminho se conseguir descobrir minha identidade e como me posiciono. Quero descobrir minha importância no mundo."},
+  {tipo:5, t:"Estarei em um bom caminho se conseguir entender como as coisas funcionam. Gosto de mergulhar fundo nos problemas e desvendá-los."},
+  {tipo:6, t:"Estarei em um bom caminho se fizer aquilo que esperam que eu faça. Gosto do apoio dos meus amigos na tomada de decisões."},
+  {tipo:7, t:"Estarei em um bom caminho se conseguir viver intensamente e explorar todas as possibilidades. A vida com diversão e aventura é sempre melhor."},
+  {tipo:8, t:"Estarei em um bom caminho se conseguir dominar as situações e escolher o meu caminho. Não suporto injustiças e falsidade."},
+  {tipo:9, t:"Estarei em um bom caminho se conseguir manter um ambiente de paz e equilíbrio. Adoro ajudar as pessoas e resolver os seus conflitos."}
+];
+ 
+// Perguntas de ranking para o Caminho Quádruplo. Cada opção é ligada a um arquétipo.
+const grupoDPerguntas = [
+  {
+    pergunta: "Quando algo dá errado, eu tendo a:",
+    opcoes: [
+      {arch:"Guerreiro", t:"assumir o controle e decidir rápido"},
+      {arch:"Curador", t:"cuidar primeiro de quem sofreu o impacto"},
+      {arch:"Visionário", t:"já pensar em como isso muda o caminho daqui para frente"},
+      {arch:"Mestre", t:"entender a causa raiz antes de reagir"}
+    ]
+  },
+  {
+    pergunta: "As pessoas me procuram quando precisam de:",
+    opcoes: [
+      {arch:"Guerreiro", t:"alguém que assuma a frente e decida"},
+      {arch:"Curador", t:"alguém que escute e sustente o grupo"},
+      {arch:"Visionário", t:"alguém que enxergue uma possibilidade que ninguém mais viu"},
+      {arch:"Mestre", t:"alguém que explique algo complexo com clareza"}
+    ]
+  },
+  {
+    pergunta: "O que mais me energiza é:",
+    opcoes: [
+      {arch:"Guerreiro", t:"executar algo até o fim e ver o resultado concreto"},
+      {arch:"Curador", t:"fortalecer uma relação ou cuidar de alguém importante"},
+      {arch:"Visionário", t:"criar algo que ainda não existia"},
+      {arch:"Mestre", t:"aprofundar o entendimento sobre algo complexo"}
+    ]
+  },
+  {
+    pergunta: "O que é mais difícil pra mim soltar é:",
+    opcoes: [
+      {arch:"Guerreiro", t:"o controle sobre como as coisas devem ser feitas"},
+      {arch:"Curador", t:"a responsabilidade pelo bem-estar das outras pessoas"},
+      {arch:"Visionário", t:"uma ideia em que eu já acredito"},
+      {arch:"Mestre", t:"a necessidade de entender tudo antes de agir"}
+    ]
+  }
+];
+ 
+const mapaTipo = {
+  "1-5":1, "1-6":2, "2-5":3, "3-4":4, "3-5":5, "1-4":6, "2-6":7, "2-4":8, "3-6":9
+};
+ 
+// Associação eneagrama → arquétipo, conforme a skill do Relatório Ninho. Só os tipos citados na skill recebem pontos.
+const archByType = {
+  1: {Guerreiro:3},
+  2: {Curador:3},
+  3: {Guerreiro:3},
+  4: {},
+  5: {"Visionário":3, Mestre:3},
+  6: {},
+  7: {"Visionário":3},
+  8: {Guerreiro:3},
+  9: {Curador:3}
+};
+ 
+let state = { grupoA:null, grupoB:null, ranking:{}, rankingD:[{},{},{},{}], lgpdDataAceite:null };
+
+// LGPD: versão da Política de Privacidade. Se a política mudar, atualize aqui também.
+const VERSAO_POLITICA = "1.0";
+const IDADE_MINIMA = 18;
+
+function calcIdade(dataISO){
+  const [a, m, d] = dataISO.split('-').map(Number);
+  const hoje = new Date();
+  let idade = hoje.getFullYear() - a;
+  if (hoje.getMonth() + 1 < m || (hoje.getMonth() + 1 === m && hoje.getDate() < d)) idade--;
+  return idade;
+}
+let currentStep = 1;
+ 
+function renderOptions(containerId, frases, name, groupKey){
+  const el = document.getElementById(containerId);
+  el.innerHTML = frases.map(f => `
+    <label class="option-card" data-val="${f.v}">
+      <input type="radio" name="${name}" value="${f.v}" onchange="selectOption('${groupKey}', ${f.v}, this)">
+      <div class="tag"></div>
+      ${f.t}
+    </label>
+  `).join('');
+}
+ 
+function selectOption(groupKey, val, inputEl){
+  state[groupKey] = val;
+  const container = inputEl.closest('.content').querySelectorAll(`[name="${inputEl.name}"]`);
+  container.forEach(inp => inp.closest('.option-card').classList.remove('selected'));
+  inputEl.closest('.option-card').classList.add('selected');
+}
+ 
+function renderRanking(){
+  const el = document.getElementById('grupoC');
+  el.innerHTML = grupoCFrases.map((f,i) => `
+    <div class="rank-item" id="rankItem${i}">
+      <select onchange="setRank(${i}, this.value)">
+        <option value="">–</option>
+        <option value="1">1º</option>
+        <option value="2">2º</option>
+        <option value="3">3º</option>
+      </select>
+      <div>${f.t}</div>
+    </div>
+  `).join('');
+}
+ 
+function setRank(idx, value){
+  const item = document.getElementById('rankItem'+idx);
+  // clear this frase's previous rank if any, then reassign
+  Object.keys(state.ranking).forEach(k => { if(state.ranking[k] === idx) delete state.ranking[k]; });
+  if(value){
+    // if that rank was already used by another frase, clear it there
+    Object.keys(state.ranking).forEach(k => { if(k === value) delete state.ranking[k]; });
+    state.ranking[value] = idx;
+    item.classList.add('filled');
+  } else {
+    item.classList.remove('filled');
+  }
+  // re-sync select UI in case a rank got reassigned elsewhere
+  document.querySelectorAll('#grupoC .rank-item select').forEach((sel, i2) => {
+    let assigned = '';
+    Object.keys(state.ranking).forEach(k => { if(state.ranking[k] === i2) assigned = k; });
+    sel.value = assigned;
+    document.getElementById('rankItem'+i2).classList.toggle('filled', !!assigned);
+  });
+}
+ 
+function renderGrupoD(){
+  const el = document.getElementById('grupoD');
+  el.innerHTML = grupoDPerguntas.map((q, qi) => `
+    <div class="quad-question">
+      <div class="qtext">${q.pergunta}</div>
+      ${q.opcoes.map((o, oi) => `
+        <div class="rank-item" id="rankD_${qi}_${oi}">
+          <select onchange="setRankD(${qi}, ${oi}, this.value)">
+            <option value="">–</option>
+            <option value="1">1º</option>
+            <option value="2">2º</option>
+            <option value="3">3º</option>
+            <option value="4">4º</option>
+          </select>
+          <div>${o.t}</div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+ 
+function setRankD(qi, oi, value){
+  const ranking = state.rankingD[qi];
+  Object.keys(ranking).forEach(k => { if(ranking[k] === oi) delete ranking[k]; });
+  if(value){
+    Object.keys(ranking).forEach(k => { if(k === value) delete ranking[k]; });
+    ranking[value] = oi;
+  }
+  // re-sync selects for this question
+  grupoDPerguntas[qi].opcoes.forEach((o, oi2) => {
+    let assigned = '';
+    Object.keys(ranking).forEach(k => { if(ranking[k] === oi2) assigned = k; });
+    const item = document.getElementById(`rankD_${qi}_${oi2}`);
+    item.querySelector('select').value = assigned;
+    item.classList.toggle('filled', !!assigned);
+  });
+}
+ 
+document.getElementById('naoSeiHora').addEventListener('change', function(){
+  document.getElementById('horaNasc').disabled = this.checked;
+  if(this.checked) document.getElementById('horaNasc').value = '';
+});
+ 
+renderOptions('grupoA', grupoAFrases, 'grupoA', 'grupoA');
+renderOptions('grupoB', grupoBFrases, 'grupoB', 'grupoB');
+renderRanking();
+renderGrupoD();
+ 
+function updateProgress(){
+  document.querySelectorAll('.progress .bar').forEach((b,i) => {
+    b.classList.toggle('done', i < currentStep);
+  });
+}
+ 
+function showStep(n){
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.querySelector(`.step[data-step="${n}"]`).classList.add('active');
+  document.getElementById('btnBack').style.display = n === 1 ? 'none' : 'block';
+  document.getElementById('btnNext').textContent = n === 5 ? 'Concluir' : (n===4 ? 'Ver resultado' : 'Continuar');
+  if(n === 5) document.getElementById('btnNext').style.display = 'none'; else document.getElementById('btnNext').style.display = 'block';
+  updateProgress();
+}
+ 
+function avancar(){
+  if(currentStep === 1){
+    const nome = document.getElementById('nome').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const whatsapp = document.getElementById('whatsapp').value.trim();
+    const data = document.getElementById('dataNasc').value;
+    const cidade = document.getElementById('cidadeNasc').value.trim();
+    const pais = document.getElementById('paisNasc').value.trim();
+    ['err1','errIdade','errAceite'].forEach(id => document.getElementById(id).classList.remove('show'));
+    if(!nome || !email || !whatsapp || !data || !cidade || !pais){
+      document.getElementById('err1').classList.add('show');
+      return;
+    }
+    // LGPD: trava de idade
+    if(calcIdade(data) < IDADE_MINIMA){
+      document.getElementById('errIdade').classList.add('show');
+      return;
+    }
+    // LGPD: aceite obrigatório
+    if(!document.getElementById('lgpdConsentimento').checked){
+      document.getElementById('errAceite').classList.add('show');
+      return;
+    }
+    state.lgpdDataAceite = new Date().toISOString();
+  }
+  if(currentStep === 2){
+    const err2 = document.getElementById('err2');
+    if(!state.grupoA && !state.grupoB){
+      err2.textContent = 'Falta escolher uma frase no 1º grupo e uma no 2º grupo.';
+      err2.classList.add('show');
+      return;
+    }
+    if(!state.grupoA){
+      err2.textContent = 'Falta escolher uma frase no 1º grupo.';
+      err2.classList.add('show');
+      return;
+    }
+    if(!state.grupoB){
+      err2.textContent = 'Falta escolher uma frase no 2º grupo.';
+      err2.classList.add('show');
+      return;
+    }
+    err2.classList.remove('show');
+  }
+  if(currentStep === 3){
+    if(state.ranking['1'] === undefined || state.ranking['2'] === undefined || state.ranking['3'] === undefined){
+      document.getElementById('err3').classList.add('show');
+      return;
+    }
+    document.getElementById('err3').classList.remove('show');
+  }
+  if(currentStep === 4){
+    const todasCompletas = state.rankingD.every(r => Object.keys(r).length === 4);
+    if(!todasCompletas){
+      document.getElementById('err4').classList.add('show');
+      return;
+    }
+    document.getElementById('err4').classList.remove('show');
+    montarResultado();
+  }
+  currentStep++;
+  showStep(currentStep);
+}
+ 
+function voltar(){
+  currentStep--;
+  showStep(currentStep);
+}
+ 
+// Sinal explícito: soma dos pontos de ranking das 4 perguntas do Passo 4. rank 1º = 4pts ... 4º = 1pt.
+function calcExplicito(){
+  const totals = {Guerreiro:0, Curador:0, "Visionário":0, Mestre:0};
+  grupoDPerguntas.forEach((q, qi) => {
+    const ranking = state.rankingD[qi];
+    Object.keys(ranking).forEach(rank => {
+      const oi = ranking[rank];
+      const arch = q.opcoes[oi].arch;
+      const pts = 5 - parseInt(rank);
+      totals[arch] += pts;
+    });
+  });
+  const norm = {};
+  Object.keys(totals).forEach(k => norm[k] = totals[k] / 16 * 10);
+  return norm;
+}
+ 
+// Sinal inferido: baseado no tipo de eneagrama principal e nos três tipos de maior intensidade já calculados no Passo 3.
+function calcInferido(tipoPrincipal, tipo1, tipo2, tipo3){
+  const totals = {Guerreiro:0, Curador:0, "Visionário":0, Mestre:0};
+  const fontes = [
+    {tipo:tipoPrincipal, peso:4},
+    {tipo:tipo1, peso:3},
+    {tipo:tipo2, peso:2},
+    {tipo:tipo3, peso:1}
+  ];
+  fontes.forEach(f => {
+    const pontos = archByType[f.tipo] || {};
+    Object.keys(pontos).forEach(arch => { totals[arch] += pontos[arch] * f.peso; });
+  });
+  const norm = {};
+  Object.keys(totals).forEach(k => norm[k] = totals[k] / 30 * 10);
+  return norm;
+}
+ 
+function calcArquetipos(tipoPrincipal, tipo1, tipo2, tipo3){
+  const explicito = calcExplicito();
+  const inferido = calcInferido(tipoPrincipal, tipo1, tipo2, tipo3);
+  const final = {};
+  Object.keys(explicito).forEach(k => {
+    let v = 0.6 * explicito[k] + 0.4 * inferido[k];
+    v = Math.max(0, Math.min(10, v));
+    final[k] = Math.round(v * 2) / 2;
+  });
+  return final;
+}
+ 
+function montarResultado(){
+  const nome = document.getElementById('nome').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const whatsapp = document.getElementById('whatsapp').value.trim();
+  const dataNasc = document.getElementById('dataNasc').value;
+  const naoSeiHora = document.getElementById('naoSeiHora').checked;
+  const horaNasc = naoSeiHora ? 'não informado' : document.getElementById('horaNasc').value;
+  const cidadeNasc = document.getElementById('cidadeNasc').value.trim();
+  const estadoNasc = document.getElementById('estadoNasc').value.trim();
+  const paisNasc = document.getElementById('paisNasc').value.trim();
+  const cidadeExibicao = [cidadeNasc, estadoNasc, paisNasc].filter(Boolean).join(', ');
+  const generoSel = document.getElementById('genero');
+  const genero = generoSel.options[generoSel.selectedIndex]?.text || '';
+  const palavraPoder = document.getElementById('palavraPoder').value.trim();
+ 
+  const tipoResult = mapaTipo[`${state.grupoA}-${state.grupoB}`] || 'não identificado';
+ 
+  const tipo1 = grupoCFrases[state.ranking['1']].tipo;
+  const tipo2 = grupoCFrases[state.ranking['2']].tipo;
+  const tipo3 = grupoCFrases[state.ranking['3']].tipo;
+ 
+  const arquetipos = calcArquetipos(tipoResult, tipo1, tipo2, tipo3);
+ 
+  const texto = `ARQUITETURA DE IDENTIDADE · RESULTADO DO FORMULÁRIO
+ 
+DADOS PESSOAIS
+Nome: ${nome}
+E-mail: ${email}
+WhatsApp: ${whatsapp}
+Data de nascimento: ${dataNasc}
+Horário de nascimento: ${horaNasc}
+Cidade/país de nascimento: ${cidadeExibicao}
+Gênero: ${genero}
+Palavra de poder: ${palavraPoder}
+ 
+ENEAGRAMA
+Tipo principal (calculado): ${tipoResult}
+Três tipos de maior intensidade, em ordem: ${tipo1}, ${tipo2}, ${tipo3}
+ 
+CAMINHO QUÁDRUPLO
+Guerreiro: ${arquetipos.Guerreiro.toFixed(1)}/10
+Curador: ${arquetipos.Curador.toFixed(1)}/10
+Visionário: ${arquetipos["Visionário"].toFixed(1)}/10
+Mestre: ${arquetipos.Mestre.toFixed(1)}/10
+ 
+Observação: sabemos que são muitos dados, mas ao integrarmos, tudo faz sentido.`;
+ 
+  document.getElementById('resultBox').textContent = texto;
+  window._resultadoTexto = texto;
+ 
+  const payload = {
+    nome, email, whatsapp, dataNasc, horaNasc,
+    cidade: cidadeNasc, estado: estadoNasc, pais: paisNasc,
+    genero, palavraPoder,
+    tipoPrincipal: tipoResult,
+    tipoIntensidade1: tipo1,
+    tipoIntensidade2: tipo2,
+    tipoIntensidade3: tipo3,
+    arquetipoGuerreiro: arquetipos.Guerreiro,
+    arquetipoCurador: arquetipos.Curador,
+    arquetipoVisionario: arquetipos["Visionário"],
+    arquetipoMestre: arquetipos.Mestre,
+    // LGPD: prova do aceite
+    lgpd_consentimento: document.getElementById('lgpdConsentimento').checked ? 'sim' : 'nao',
+    lgpd_marketing: document.getElementById('lgpdMarketing').checked ? 'sim' : 'nao',
+    lgpd_data_aceite: state.lgpdDataAceite,
+    lgpd_versao_politica: VERSAO_POLITICA
+  };
+ 
+  enviarResultado(payload);
+}
+ 
+function enviarResultado(payload){
+  const status = document.getElementById('sendStatus');
+ 
+  if(!WEB_APP_URL){
+    status.textContent = 'Envio automático não configurado. Use o botão para copiar e enviar manualmente.';
+    status.classList.add('error');
+    return;
+  }
+ 
+  status.textContent = 'Enviando resultado...';
+  status.classList.remove('error');
+ 
+  fetch(WEB_APP_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  }).then(() => {
+    status.textContent = 'Resultado enviado.';
+    status.classList.remove('error');
+  }).catch(() => {
+    status.textContent = 'Não foi possível enviar automaticamente. Copie o resultado abaixo e envie manualmente.';
+    status.classList.add('error');
+  });
+}
+ 
+function toggleDados(){
+  const box = document.getElementById('resultBox');
+  const btn = document.getElementById('toggleBtn');
+  const aberto = box.style.display !== 'none';
+  box.style.display = aberto ? 'none' : 'block';
+  btn.textContent = aberto ? 'Ver dados enviados' : 'Esconder dados enviados';
+}
+ 
+function copiarResultado(){
+  navigator.clipboard.writeText(window._resultadoTexto || '').then(() => {
+    const msg = document.getElementById('copiedMsg');
+    msg.textContent = 'Copiado.';
+    setTimeout(() => msg.textContent = '', 2000);
+  });
+}
+</script>
+ 
+</body>
+</html>
